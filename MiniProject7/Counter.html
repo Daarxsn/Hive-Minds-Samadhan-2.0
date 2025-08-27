@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>React State Management Mini Project</title>
+    <!-- React and ReactDOM from CDN -->
+    <script crossorigin src="https://unpkg.com/react@18/umd/react.development.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+    <!-- Babel for JSX transformation -->
+    <script src="https://unpkg.com/@babel/standalone/babel.min.js"></script>
+    <!-- Tailwind CSS for styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+            background: linear-gradient(135deg, #ffffff 0%, #0079a9 100%);
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        
+        .glass-morphism {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            border-radius: 16px;
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 20px 40px rgba(14, 0, 0, 0.1);
+        }
+        
+        .counter-badge {
+            width: 60px;
+            height: 60px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            font-size: 1.5rem;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .text-preview {
+            min-height: 120px;
+            border-left: 4px solid #6366f1;
+            padding-left: 16px;
+        }
+        
+        .gradient-text {
+            background: linear-gradient(45deg, #000000, #000000, #000000);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+</head>
+<body>
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState } = React;
+
+        // Counter Component
+        const Counter = () => {
+            const [count, setCount] = useState(0);
+            
+            const increment = () => setCount(count + 1);
+            const decrement = () => setCount(count - 1);
+            const reset = () => setCount(0);
+            
+            const getCounterColor = () => {
+                if (count > 0) return 'bg-green-100 text-green-800';
+                if (count < 0) return 'bg-red-100 text-red-800';
+                return 'bg-gray-100 text-gray-800';
+            };
+            
+            const getCounterEmoji = () => {
+                if (count > 10) return '🚀';
+                if (count > 5) return '🔥';
+                if (count > 0) return '👍';
+                if (count < 0) return '😢';
+                return '😊';
+            };
+
+            return (
+                <div className="glass-morphism p-8 rounded-xl shadow-xl card-hover">
+                    <h2 className="text-2xl font-bold text-white mb-6 text-center gradient-text">
+                        Counter with useState
+                    </h2>
+                    
+                    <div className="flex flex-col items-center space-y-6">
+                        <div className={`counter-badge ${getCounterColor()} shadow-lg`}>
+                            {count}
+                        </div>
+                        
+                        <p className="text-white text-sm">
+                            Current mood: {getCounterEmoji()}
+                        </p>
+                        
+                        <div className="flex space-x-4">
+                            <button
+                                onClick={decrement}
+                                className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg transition-all duration-200 transform hover:scale-105"
+                            >
+                                Decrement -
+                            </button>
+                            
+                            <button
+                                onClick={reset}
+                                className="px-6 py-2 bg-gray-500 hover:bg-gray-600 text-white rounded-lg transition-all duration-200 transform hover:scale-105"
+                            >
+                                Reset
+                            </button>
+                            
+                            <button
+                                onClick={increment}
+                                className="px-6 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-all duration-200 transform hover:scale-105"
+                            >
+                                Increment +
+                            </button>
+                        </div>
+                        
+                        <div className="mt-4 text-white text-sm">
+                            <p>🔍 State value: {count}</p>
+                            <p>📊 Type: {typeof count}</p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Live Text Preview Component
+        const LiveTextPreview = () => {
+            const [text, setText] = useState('');
+            const [isTyping, setIsTyping] = useState(false);
+            
+            const handleInputChange = (e) => {
+                const value = e.target.value;
+                setText(value);
+                setIsTyping(value.length > 0);
+            };
+            
+            const clearText = () => {
+                setText('');
+                setIsTyping(false);
+            };
+            
+            const getWordCount = () => text.trim() ? text.trim().split(/\s+/).length : 0;
+            const getCharCount = () => text.length;
+            
+            const getPreviewStatus = () => {
+                if (!text.trim()) return 'Start typing to see magic... ✨';
+                if (text.length > 100) return 'Wow, that\'s detailed! 📝';
+                if (text.length > 50) return 'Looking good! 👌';
+                return 'Keep going... 🚀';
+            };
+
+            return (
+                <div className="glass-morphism p-8 rounded-xl shadow-xl card-hover">
+                    <h2 className="text-2xl font-bold text-white mb-6 text-center gradient-text">
+                        Live Text Preview
+                    </h2>
+                    
+                    <div className="space-y-6">
+                        {/* Input Area */}
+                        <div>
+                            <label className="block text-white text-sm font-medium mb-2">
+                                Type something amazing:
+                            </label>
+                            <textarea
+                                value={text}
+                                onChange={handleInputChange}
+                                placeholder="Start typing here..."
+                                className="w-full p-4 rounded-lg bg-white/90 border border-gray-300 focus:ring-2 focus:ring-blue-500 focus:border-transparent resize-none transition-all duration-200"
+                                rows="4"
+                            />
+                        </div>
+                        
+                        {/* Stats */}
+                        <div className="flex justify-between text-white text-sm">
+                            <span>📝 Words: {getWordCount()}</span>
+                            <span>🔤 Characters: {getCharCount()}</span>
+                            <span>📊 Status: {getPreviewStatus()}</span>
+                        </div>
+                        
+                        {/* Clear Button */}
+                        {isTyping && (
+                            <button
+                                onClick={clearText}
+                                className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded-lg transition-all duration-200 transform hover:scale-105 text-sm"
+                            >
+                                Clear Text
+                            </button>
+                        )}
+                        
+                        {/* Live Preview */}
+                        <div className="mt-6">
+                            <h3 className="text-white font-semibold mb-3">Live Preview:</h3>
+                            <div className="text-preview bg-white/10 p-4 rounded-lg">
+                                {text ? (
+                                    <p className="text-white leading-relaxed">{text}</p>
+                                ) : (
+                                    <p className="text-gray-400 italic">Your text will appear here...</p>
+                                )}
+                            </div>
+                        </div>
+                        
+                        {/* Additional Info */}
+                        <div className="mt-4 p-4 bg-black/20 rounded-lg">
+                            <h4 className="text-white font-semibold mb-2">🔧 How it works:</h4>
+                            <p className="text-white text-sm">
+                                This component uses <code className="bg-black/30 px-1 rounded">useState</code> to manage 
+                                the text input state. Every keystroke updates the state, which triggers a re-render 
+                                showing the live preview and statistics.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Main App Component
+        const App = () => {
+            return (
+                <div className="min-h-screen py-12">
+                    <div className="max-w-6xl mx-auto px-4">
+                        {/* Header */}
+                        <header className="text-center mb-12">
+                            <h1 className="text-4xl font-bold text-white mb-4">
+                                 React State Management Workshop
+                            </h1>
+                            <p className="text-white/80 text-lg">
+                                Learn useState, input handling, and state-driven UI updates
+                            </p>
+                        </header>
+                        
+                        {/* Features Grid */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 mb-12">
+                            <Counter />
+                            <LiveTextPreview />
+                        </div>
+                        
+                        {/* Educational Section */}
+                        <div className="glass-morphism p-8 rounded-xl">
+                            <h2 className="text-2xl font-bold text-white mb-6 text-center gradient-text">
+                                📚 Key Concepts Demonstrated
+                            </h2>
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                <div className="p-4 bg-white/10 rounded-lg">
+                                    <h3 className="text-white font-semibold mb-2">1. useState Hook</h3>
+                                    <p className="text-white text-sm">
+                                        Manages component state without class components. Returns the current state value and a function to update it.
+                                    </p>
+                                </div>
+                                <div className="p-4 bg-white/10 rounded-lg">
+                                    <h3 className="text-white font-semibold mb-2">2. Event Handling</h3>
+                                    <p className="text-white text-sm">
+                                        Responds to user interactions like clicks and input changes to update state.
+                                    </p>
+                                </div>
+                                <div className="p-4 bg-white/10 rounded-lg">
+                                    <h3 className="text-white font-semibold mb-2">3. Derived State</h3>
+                                    <p className="text-white text-sm">
+                                        Computes values from state (word count, character count) without storing them separately.
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            );
+        };
+
+        // Render the app
+        ReactDOM.render(<App />, document.getElementById('root'));
+    </script>
+</body>
+</html>
+
