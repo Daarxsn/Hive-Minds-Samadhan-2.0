@@ -1,0 +1,89 @@
+/* src/pages/Login.css */
+
+/* reset so centering works reliably */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
+
+/* page wrapper centers content */
+.login-page {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background: #f3f4f6; /* light gray */
+  padding: 20px;
+}
+
+/* card */
+.login-card {
+  background: #fff;
+  padding: 28px;
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(2,6,23,0.08);
+  width: 380px;
+  max-width: 100%;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+/* heading */
+.login-title {
+  margin: 0 0 18px 0;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+/* inputs */
+.input {
+  width: 100%;
+  padding: 10px 12px;
+  margin-bottom: 12px;
+  border: 1px solid #d1d5db;
+  border-radius: 8px;
+  font-size: 14px;
+  box-sizing: border-box;
+}
+
+/* button */
+.btn {
+  width: 100%;
+  padding: 10px 12px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+.btn:disabled {
+  opacity: 0.7;
+  cursor: not-allowed;
+}
+
+/* small text */
+.small {
+  margin-top: 14px;
+  font-size: 13px;
+  color: #6b7280;
+}
+
+/* link style */
+.link {
+  color: #2563eb;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+/* accessibility helper (hidden label) */
+.sr-only {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0,0,0,0);
+  border: 0;
+}
+
