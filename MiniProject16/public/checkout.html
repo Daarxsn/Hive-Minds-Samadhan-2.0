@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Checkout - Mini E-commerce Store</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f5f7fa;
+      margin: 0;
+      padding: 0;
+      text-align: center;
+    }
+
+    h1 {
+      margin: 20px 0;
+      color: #2c3e50;
+    }
+
+    .order-summary {
+      background: white;
+      max-width: 600px;
+      margin: 20px auto;
+      padding: 20px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      text-align: left;
+    }
+
+    .order-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      border-bottom: 1px dashed #ddd;
+      padding-bottom: 10px;
+    }
+
+    .order-item img {
+      width: 60px;
+      height: 60px;
+      border-radius: 8px;
+      object-fit: cover;
+      margin-right: 15px;
+    }
+
+    .item-details {
+      flex-grow: 1;
+    }
+
+    .item-details h4 {
+      margin: 0;
+      font-size: 16px;
+      color: #333;
+    }
+
+    .item-details p {
+      margin: 3px 0;
+      color: #666;
+    }
+
+    .total {
+      font-size: 18px;
+      font-weight: bold;
+      text-align: right;
+      margin-top: 15px;
+    }
+
+    .btn {
+      background: #28a745;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 20px;
+      display: inline-block;
+      transition: 0.3s;
+    }
+
+    .btn:hover {
+      background: #218838;
+    }
+  </style>
+</head>
+<body>
+  <h1>🧾 Checkout</h1>
+
+  <div class="order-summary" id="orderSummary">
+    <h3>Your Order</h3>
+    <div id="orderItems"></div>
+    <p class="total">Total: ₹<span id="orderTotal">0.00</span></p>
+    <button class="btn" onclick="placeOrder()">Place Order</button>
+  </div>
+
+  <script>
+    const products = [
+      { name: "Wireless Headphones", img: "img/headphones.jpg" },
+      { name: "Smart Watch", img: "img/watch.jpg" },
+      { name: "Bluetooth Speaker", img: "img/speaker.jpg" },
+      { name: "Gaming Mouse", img: "img/mouse.jpg" },
+      { name: "Mechanical Keyboard", img: "img/keyboard.jpg" },
+      { name: "Phone Stand", img: "img/stand.jpg" },
+      { name: "Power Bank", img: "img/powerbank.jpg" },
+      { name: "Laptop Bag", img: "img/laptopbag.jpg" }
+    ];
+
+    function loadOrder() {
+      const cart = JSON.parse(localStorage.getItem("cart")) || [];
+      const total = localStorage.getItem("total") || 0;
+      const orderItems = document.getElementById("orderItems");
+
+      if (cart.length === 0) {
+        orderItems.innerHTML = "<p>Your cart is empty.</p>";
+        document.querySelector(".btn").style.display = "none";
+        return;
+      }
+
+      orderItems.innerHTML = "";
+      cart.forEach(item => {
+        const productInfo = products.find(p => p.name === item.product);
+        const imgSrc = productInfo ? productInfo.img : "img/default.jpg";
+
+        const div = document.createElement("div");
+        div.className = "order-item";
+        div.innerHTML = `
+          <img src="${imgSrc}" alt="${item.product}">
+          <div class="item-details">
+            <h4>${item.product}</h4>
+            <p>₹${item.price}</p>
+          </div>
+        `;
+        orderItems.appendChild(div);
+      });
+
+      document.getElementById("orderTotal").textContent = parseFloat(total).toFixed(2);
+    }
+
+    function placeOrder() {
+      localStorage.removeItem("cart");
+      localStorage.removeItem("total");
+      window.location.href = "/success.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", loadOrder);
+  </script>
+</body>
+</html>

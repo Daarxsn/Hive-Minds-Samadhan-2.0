@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Your Cart</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 700px;
+      margin: auto;
+      padding: 20px;
+      background: #f8f9fa;
+    }
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+    #cartItems {
+      list-style: none;
+      padding: 0;
+      margin-top: 20px;
+    }
+    #cartItems li {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px dashed #ccc;
+    }
+    #cartItems li:last-child {
+      border-bottom: none;
+    }
+    .remove-btn {
+      background: #dc3545;
+      color: white;
+      border: none;
+      padding: 4px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+    .remove-btn:hover {
+      background: #a71d2a;
+    }
+    #totalContainer {
+      margin-top: 20px;
+      font-size: 1.2em;
+      font-weight: bold;
+      text-align: right;
+    }
+    .actions {
+      margin-top: 20px;
+      display: flex;
+      justify-content: space-between;
+    }
+    button {
+      background: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <h1>🛍 Your Cart</h1>
+
+  <ul id="cartItems"></ul>
+  <p id="totalContainer">Total: ₹<span id="cartTotal">0.00</span></p>
+
+  <div class="actions">
+    <button onclick="continueShopping()">⬅ Continue Shopping</button>
+    <button onclick="goToCheckout()">Proceed to Checkout ➡</button>
+  </div>
+
+  <script>
+    let cart = [];
+
+    function loadCart() {
+      cart = JSON.parse(localStorage.getItem("cart")) || [];
+      renderCart();
+    }
+
+    function renderCart() {
+      const cartItems = document.getElementById("cartItems");
+      const totalEl = document.getElementById("cartTotal");
+      
+      cartItems.innerHTML = "";
+      let total = 0;
+
+      if (cart.length === 0) {
+        cartItems.innerHTML = "<li>Your cart is empty.</li>";
+        totalEl.textContent = "0.00";
+        return;
+      }
+
+      cart.forEach((item, index) => {
+        total += item.price;
+        const li = document.createElement("li");
+        li.innerHTML = `
+          ${item.product} - ₹${item.price}
+          <button class="remove-btn" onclick="removeItem(${index})">Remove</button>
+        `;
+        cartItems.appendChild(li);
+      });
+
+      totalEl.textContent = total.toFixed(2);
+      localStorage.setItem("total", total); // keep total updated
+    }
+
+    function removeItem(index) {
+      cart.splice(index, 1);
+      localStorage.setItem("cart", JSON.stringify(cart));
+      renderCart();
+    }
+
+    function continueShopping() {
+      window.location.href = "/index.html";
+    }
+
+    function goToCheckout() {
+      if (cart.length === 0) {
+        alert("Your cart is empty!");
+        return;
+      }
+      window.location.href = "/checkout.html";
+    }
+
+    document.addEventListener("DOMContentLoaded", loadCart);
+  </script>
+</body>
+</html>
