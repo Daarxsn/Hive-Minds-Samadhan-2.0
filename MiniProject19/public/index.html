@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Social Media Dashboard</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<h1>Mini Social Media Dashboard</h1>
+
+<div id="notifications"></div>
+
+<div id="userSwitcher">
+  <div>
+    User: 
+    <select id="userSelect"></select>
+    <select id="filterUser">
+      <option value="all">All Users</option>
+    </select>
+  </div>
+  <div>
+    <button onclick="addUser()">➕ Add User</button>
+    <button id="darkModeToggle" onclick="toggleDarkMode()">🌙 Dark Mode</button>
+  </div>
+</div>
+
+<div id="postForm">
+  <textarea id="postContent" rows="3" placeholder="What's on your mind?"></textarea>
+  <input type="file" id="postImage" accept="image/*" />
+  <button onclick="createPost()">Post</button>
+</div>
+
+<div id="postsContainer"></div>
+
+<script src="script.js"></script>
+</body>
+</html>
