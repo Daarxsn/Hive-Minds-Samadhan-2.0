@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Mini Trello Advanced Enhanced</title>
+<style>
+  body { 
+    font-family: Arial, sans-serif; 
+    display: flex; 
+    flex-direction: column; 
+    gap: 20px; 
+    padding: 20px; 
+    background: #f0f2f5;
+    max-width: 1000px;
+    margin: auto;
+  }
+  #progressContainer {
+    margin-bottom: 20px;
+  }
+  #progressBarContainer {
+    background: #e0e0e0; 
+    border-radius: 15px; 
+    height: 25px; 
+    width: 100%;
+    overflow: hidden;
+  }
+  #progressBar {
+    background: linear-gradient(90deg, #28a745, #20c997); 
+    height: 100%; 
+    width: 0%; 
+    border-radius: 15px;
+    transition: width 0.4s ease;
+  }
+  .columns {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+  }
+  .column { 
+    flex: 1; 
+    padding: 15px; 
+    border-radius: 12px; 
+    min-height: 250px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    transition: transform 0.2s;
+    position: relative;
+    background-clip: padding-box;
+  }
+  .column:hover { transform: translateY(-3px); }
+  #todo { background: #ffe5e5; }
+  #inprogress { background: #fff3cd; }
+  #done { background: #d4edda; }
+  h2 { text-align: center; margin-bottom: 10px; color: #333; }
+  .task { 
+    background: white; 
+    padding: 12px; 
+    margin-bottom: 12px; 
+    border-radius: 8px; 
+    cursor: grab; 
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+    position: relative;
+    transition: transform 0.2s, box-shadow 0.2s, background 0.3s;
+  }
+  .task.dragging { opacity: 0.6; transform: scale(1.05); }
+  .task.fade-in { animation: fadeIn 0.5s ease; }
+  @keyframes fadeIn { from {opacity:0; transform:translateY(-10px);} to {opacity:1; transform:translateY(0);} }
+  .task:hover { transform: translateY(-2px); box-shadow: 0 4px 10px rgba(0,0,0,0.15); }
+  .priority { float: right; font-size: 0.75em; padding: 2px 6px; border-radius: 5px; color: white; margin-left: 5px; }
+  .high { background: #dc3545; }
+  .medium { background: #ffc107; color: #333; }
+  .low { background: #28a745; }
+  .delete-btn { position: absolute; top: 5px; right: 5px; border: none; background: transparent; cursor: pointer; font-size: 1em; color: #888; }
+  .delete-btn:hover { color: #dc3545; }
+  .drag-over { background: rgba(0,0,0,0.05); border: 2px dashed #007bff; }
+  input, select, textarea { width: 100%; padding: 6px; margin-bottom: 6px; border-radius: 5px; border: 1px solid #ccc; }
+  button { padding: 6px 10px; border: none; border-radius: 5px; background: #007bff; color: white; cursor: pointer; font-weight: bold; transition: background 0.3s, transform 0.2s; margin-top: 5px; }
+  button:hover { background: #0056b3; transform: scale(1.05); }
+  .task-count { font-size: 0.85em; margin-bottom: 5px; text-align: center; transition: all 0.3s ease; }
+  .overdue { border-left: 4px solid red; }
+  #filterContainer { display:flex; gap:10px; margin-bottom:10px; }
+  @media (max-width: 800px) { .columns { flex-direction: column; } }
+</style>
+</head>
+<body>
+
+<div id="progressContainer">
+  <h3>Project Progress: <span id="progressText">0%</span></h3>
+  <div id="progressBarContainer">
+    <div id="progressBar"></div>
+  </div>
+</div>
+
+<div id="filterContainer">
+  <input type="text" id="searchInput" placeholder="🔍 Search tasks by name..." oninput="filterTasks()" />
+  <button onclick="resetTasks()">🧹 Reset All Tasks</button>
+</div>
+
+<div class="columns">
+  <div class="column" id="todo">
+    <h2>📝 To Do</h2>
+    <div class="task-count" id="todoCount">0 Tasks</div>
+    <input type="text" id="taskInput" placeholder="Task name" />
+    <textarea id="descInput" placeholder="Task description"></textarea>
+    <input type="date" id="deadlineInput" />
+    <select id="priorityInput">
+      <option value="high">High</option>
+      <option value="medium" selected>Medium</option>
+      <option value="low">Low</option>
+    </select>
+    <button onclick="addTask()">➕ Add Task</button>
+  </div>
+
+  <div class="column" id="inprogress">
+    <h2>⏳ In Progress</h2>
+    <div class="task-count" id="inprogressCount">0 Tasks</div>
+  </div>
+
+  <div class="column" id="done">
+    <h2>✅ Done</h2>
+    <div class="task-count" id="doneCount">0 Tasks</div>
+  </div>
+</div>
+
+<script>
+const columns = document.querySelectorAll('.column');
+let taskId = 0;
+
+// Make task draggable, editable, deletable
+function makeDraggable(task) {
+  task.addEventListener('dragstart', e => {
+    e.dataTransfer.setData('text/plain', task.dataset.id);
+    task.classList.add('dragging');
+  });
+  task.addEventListener('dragend', () => task.classList.remove('dragging'));
+
+  task.addEventListener('dblclick', () => {
+    const newName = prompt("Edit task name:", task.querySelector('.name').textContent);
+    if(newName) task.querySelector('.name').textContent = newName;
+    const newDesc = prompt("Edit description:", task.dataset.desc);
+    if(newDesc !== null) task.dataset.desc = newDesc;
+    const newDeadline = prompt("Edit deadline (YYYY-MM-DD):", task.dataset.deadline);
+    if(newDeadline !== null) task.dataset.deadline = newDeadline;
+    saveTasks(); updateProgress();
+  });
+
+  task.querySelector('.delete-btn').addEventListener('click', e => {
+    e.stopPropagation(); task.remove(); updateProgress(); saveTasks();
+  });
+
+  // Tooltip
+  task.title = `Description: ${task.dataset.desc || 'N/A'}\nDeadline: ${task.dataset.deadline || 'N/A'}`;
+}
+
+// Drag & Drop
+columns.forEach(col => {
+  col.addEventListener('dragover', e => { e.preventDefault(); col.classList.add('drag-over'); });
+  col.addEventListener('dragleave', () => col.classList.remove('drag-over'));
+  col.addEventListener('drop', e => {
+    e.preventDefault(); col.classList.remove('drag-over');
+    const id = e.dataTransfer.getData('text/plain');
+    const draggedTask = document.querySelector(`.task[data-id='${id}']`);
+    draggedTask.classList.add('fade-in');
+    setTimeout(()=>draggedTask.classList.remove('fade-in'), 500);
+    col.appendChild(draggedTask);
+    sortColumn(col);
+    updateProgress(); saveTasks();
+  });
+});
+
+// Add new task
+function addTask() {
+  const name = document.getElementById('taskInput').value.trim();
+  if(!name) return alert("Enter task name!");
+  const desc = document.getElementById('descInput').value.trim();
+  const deadline = document.getElementById('deadlineInput').value;
+  const priority = document.getElementById('priorityInput').value;
+
+  const task = document.createElement('div');
+  task.className = 'task';
+  task.setAttribute('draggable','true');
+  task.dataset.id = 'task' + (++taskId);
+  task.dataset.desc = desc;
+  task.dataset.deadline = deadline;
+  task.dataset.priority = priority;
+
+  // Overdue highlight
+  if(deadline && new Date(deadline) < new Date()) task.classList.add('overdue');
+
+  // Deadline urgency background
+  if(deadline){
+    const daysLeft = (new Date(deadline) - new Date())/(1000*60*60*24);
+    if(daysLeft<0) task.style.background = '#f8d7da';
+    else if(daysLeft<3) task.style.background = '#fff3cd';
+    else task.style.background = 'white';
+  }
+
+  task.innerHTML = `<span class="name">${name}</span>
+    <span class="priority ${priority}">${priority.charAt(0).toUpperCase()+priority.slice(1)}</span>
+    <button class="delete-btn">❌</button>`;
+
+  makeDraggable(task);
+  document.getElementById('todo').appendChild(task);
+  sortColumn(document.getElementById('todo'));
+
+  document.getElementById('taskInput').value = '';
+  document.getElementById('descInput').value = '';
+  document.getElementById('deadlineInput').value = '';
+  updateProgress(); saveTasks();
+}
+
+// Progress & counts
+function updateProgress() {
+  const allTasks = document.querySelectorAll('.task').length;
+  const doneTasks = document.querySelectorAll('#done .task').length;
+  const progress = allTasks===0 ? 0 : Math.round((doneTasks/allTasks)*100);
+  document.getElementById('progressText').textContent = progress + '%';
+  document.getElementById('progressBar').style.width = progress + '%';
+
+  document.getElementById('todoCount').textContent = document.querySelectorAll('#todo .task').length + ' Tasks';
+  document.getElementById('inprogressCount').textContent = document.querySelectorAll('#inprogress .task').length + ' Tasks';
+  document.getElementById('doneCount').textContent = document.querySelectorAll('#done .task').length + ' Tasks';
+}
+
+// Sort tasks by priority: high > medium > low
+function sortColumn(col) {
+  const priorityOrder = { high:1, medium:2, low:3 };
+  const tasks = Array.from(col.querySelectorAll('.task'));
+  tasks.sort((a,b)=> priorityOrder[a.dataset.priority] - priorityOrder[b.dataset.priority]);
+  tasks.forEach(t => col.appendChild(t));
+}
+
+// Save/load to LocalStorage
+function saveTasks() {
+  const tasks = [];
+  document.querySelectorAll('.task').forEach(task=>{
+    tasks.push({
+      id: task.dataset.id,
+      name: task.querySelector('.name').textContent,
+      desc: task.dataset.desc,
+      deadline: task.dataset.deadline,
+      priority: task.dataset.priority,
+      column: task.parentElement.id
+    });
+  });
+  localStorage.setItem('tasks', JSON.stringify(tasks));
+}
+
+function loadTasks() {
+  const tasks = JSON.parse(localStorage.getItem('tasks') || '[]');
+  tasks.forEach(t=>{
+    const task = document.createElement('div');
+    task.className = 'task';
+    task.setAttribute('draggable','true');
+    task.dataset.id = t.id;
+    task.dataset.desc = t.desc;
+    task.dataset.deadline = t.deadline;
+    task.dataset.priority = t.priority;
+    if(t.deadline && new Date(t.deadline) < new Date()) task.classList.add('overdue');
+
+    task.innerHTML = `<span class="name">${t.name}</span>
+      <span class="priority ${t.priority}">${t.priority.charAt(0).toUpperCase()+t.priority.slice(1)}</span>
+      <button class="delete-btn">❌</button>`;
+    makeDraggable(task);
+    document.getElementById(t.column).appendChild(task);
+    if(parseInt(t.id.replace('task',''))>taskId) taskId=parseInt(t.id.replace('task',''));
+    sortColumn(document.getElementById(t.column));
+  });
+  updateProgress();
+}
+
+// Filter tasks by name
+function filterTasks() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  document.querySelectorAll('.task').forEach(task=>{
+    task.style.display = task.querySelector('.name').textContent.toLowerCase().includes(query) ? '' : 'none';
+  });
+}
+
+// Reset all tasks
+function resetTasks() {
+  if(confirm("Are you sure you want to clear all tasks?")){
+    document.querySelectorAll('.task').forEach(t=>t.remove());
+    localStorage.removeItem('tasks');
+    updateProgress();
+  }
+}
+
+loadTasks();
+</script>
+</body>
+</html>
