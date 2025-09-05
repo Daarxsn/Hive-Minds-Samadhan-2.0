@@ -144,9 +144,65 @@ This repository contains ** 21 mini-projects ** developed using JavaScript, HTML
   cd ProductCart/product-cart-app
   npm install
   npm run dev
-  ```  
-
+  ```
 --- 
+
+### 11 Student CURED App (`MiniProject11`)
+- **Description:** A project demonstrating new JavaScript functionality.
+- **Tech Stack:** JavaScript
+- **Features:**
+  - Interactive logic.
+  - Dynamic output.
+  - Beginner-friendly implementation.
+- **How to Run:** Run `MiniProject11.js` in browser console or link it with an HTML file.
+
+---
+
+### 12 TO-Do App (`MiniProject12`)
+- **Description:** A simple utility project focusing on data manipulation.
+- **Tech Stack:** JavaScript
+- **Features:**
+  - Accepts input data.
+  - Performs calculations or transformations.
+  - Displays processed results dynamically.
+- **How to Run:** Run `MiniProject12.js` in browser console or Node.js.
+
+---
+
+### 13 Notes App (`MiniProject13`)
+- **Description:** A project to strengthen logic building and conditional statements.
+- **Tech Stack:** JavaScript
+- **Features:**
+  - Input handling.
+  - Conditional checks and validations.
+  - Displays results interactively.
+- **How to Run:** Run `MiniProject13.js` in browser console or Node.js.
+
+---
+
+### 14 Full Stack App(Backend) (`MiniProject14`)
+- **Description:** A small web application showcasing frontend interaction.
+- **Tech Stack:** HTML, CSS, JavaScript
+- **Features:**
+  - User-friendly interface.
+  - DOM manipulation.
+  - Responsive design.
+- **How to Run:** Open `MiniProject14.html` in any web browser.
+
+---
+
+### 15 Full Stack App(Frontend)(`MiniProject15`)
+- **Description:** A project built using React.js, designed as an entry point for larger React applications.
+- **Tech Stack:** React.js
+- **Features:**
+  - Component-based structure.
+  - Interactive UI.
+  - Modern frontend setup.
+- **How to Run:**
+```bash
+  npm install
+  npm start
+```
 
 ### 16 Basic Web App (MiniProject16)  
 - **Description:** A simple **HTML, CSS, and JavaScript** application designed to practice UI building and basic scripting concepts.  
