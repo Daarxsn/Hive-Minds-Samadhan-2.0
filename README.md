@@ -152,7 +152,7 @@ These projects range from **basic JavaScript utilities** to **React-based applic
 ## ⚡ Installation & Usage  
 
 Clone this repository:  
-
+https://github.com/Daarxsn/Hive-Minds-Samadhan-2.0.git
 ```
 
 For **HTML/JS projects** → open `.html` or link `.js` files in browser.  
