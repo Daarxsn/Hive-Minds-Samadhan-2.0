@@ -1,0 +1,132 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Hive Mind — Developer Portfolio</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="topbar">
+    <div class="container">
+      <div class="logo">Hive Minds</div>
+      <nav class="nav">
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero">
+      <div class="container hero-grid">
+        <div id="profileCard" class="profile-card" title="Click to open profile">
+          <img src="images/profile.jpg" alt="Hive Mind" class="profile-img">
+          <h1>Hive Mind</h1>
+          <p class="tagline">Solving problems with elegant code</p>
+          <a href="https://youtu.be/lgn9b__6sDU" class="email"> OUR YOU TUBE VIDEO</a>
+        </div>
+
+        <div class="hero-intro">
+          <h2>Hello — We Are Hive Mind</h2>
+          <p>Samadhan 2.0 has been an amazing journey where I built 21 projects, with this website as the final one.
+Every project gave me the chance to explore, learn, and showcase my creativity.
+I truly enjoyed coding, designing, and preparing a YouTube video and PPT to highlight my work.
+This experience has strengthened my passion for innovation and problem-solving.
+I’m proud of the effort I put into Round One and the growth it brought me.
+Now, I’m excited and looking forward to being selected for Round Two!.</p>
+          <p><strong>Top skills:</strong> JavaScript • Node.js • React • CSS</p>
+          <a href="#projects" class="btn">See my work</a>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="container about">
+      <h3>About</h3>
+      <p>Short bio: I love turning ideas into working apps. I enjoy learning and sharing clean code.</p>
+      <ul>
+        <li>Education: Self-taught / bootcamp</li>
+        <li>Interests: Web performance, accessibility, clean UX</li>
+      </ul>
+    </section>
+
+  
+    <section id="projects" class="container projects">
+      <h3>Projects</h3>
+      <div class="project-grid">
+        <article class="project-card">
+          <img src="images/project1.png" alt="Project 1 screenshot">
+          <h4>Project One</h4>
+          <p>Short description: small task manager app.</p>
+          <p class="tech">HTML • JS • LocalStorage</p>
+          <a href="#" class="btn small">View</a>
+        </article>
+
+
+
+        <article class="project-card">
+          <img src="images/project2.png" alt="Project 2 screenshot">
+          <h4>Project Two</h4>
+          <p>Short description: weather map app using a public API.</p>
+          <p class="tech">React • APIs • CSS Grid</p>
+          <a href="#" class="btn small">View</a>
+        </article>
+
+        <article class="project-card">
+          <img src="images/project3.png" alt="Project 3 screenshot">
+          <h4>Project Three</h4>
+          <p>Short description: realtime chat demo with Socket.IO.</p>
+          <p class="tech">Node • Socket.IO</p>
+          <a href="#" class="btn small">View</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="container contact">
+      <h3>Contact Me</h3>
+      <form action="https://formspree.io/f/YOUR_FORM_ID" method="POST" class="contact-form">
+        <!-- Replace YOUR_FORM_ID with the id you get from Formspree, or leave action empty and use mailto below -->
+        <label>
+          Your name
+          <input name="name" type="text" placeholder="Your name" required>
+        </label>
+        <label>
+          Your email
+          <input name="email" type="email" placeholder="you@example.com" required>
+        </label>
+        <label>
+          Message
+          <textarea name="message" placeholder="Write a message" required></textarea>
+        </label>
+        <button type="submit" class="btn">Send Message</button>
+        <p class="hint"> watch us on youtube <a href="https://youtu.be/lgn9b__6sDU" class="email"> CLICK TO WATCH .</p>
+      </form>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <small>© <span id="year"></span> Hive Mind — Built with care</small>
+    </div>
+  </footer>
+
+  <!-- Profile modal (hidden by default) -->
+  <div id="profileModal" class="modal" aria-hidden="true">
+    <div class="modal-content">
+      <button id="closeModal" class="modal-close">Close ✕</button>
+      <img src="images/profile.jpg" alt="Hive Mind large" class="modal-img">
+      <h2>Hive Mind</h2>
+      <p>Longer bio: Explain one or two projects, what you solved, what tech you used, and one measurable result if you have it.</p>
+      <ul>
+        <li>Project highlight: Reduced load time by 40% on a project.</li>
+        <li>Patents / achievements: (if any)</li>
+      </ul>
+      <a href="#contact" class="btn">Hire me</a>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
