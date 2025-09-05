@@ -206,7 +206,8 @@ Clone this repository:
 ```bash
 https://github.com/Daarxsn/Hive-Minds-Samadhan-2.0.git
 ```
-
+- For **HTML/JS projects** → open `.html` or link `.js` files in browser.  
+- For **React projects** → run `npm install` and `npm start` (or `npm run dev` for Vite).  
 - For **HTML/JS projects (MiniProject16–18):** Open the `index.html` file in a browser.  
 - For **Node.js project (MiniProject19):** Install dependencies and start the server as shown above.  
 
