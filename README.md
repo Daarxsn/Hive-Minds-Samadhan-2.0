@@ -191,7 +191,7 @@ This repository contains ** 21 mini-projects ** developed using JavaScript, HTML
 
 ---
 
-### 15 Full Stack App(Frontend)(`MiniProject15`)
+### 15 Full Stack App(Frontend) (`MiniProject15`)
 - **Description:** A project built using React.js, designed as an entry point for larger React applications.
 - **Tech Stack:** React.js
 - **Features:**
@@ -266,7 +266,8 @@ Open `http://localhost:3000` in your web browser.
 - **How to Run:**
   Open `Day20-WeatherMapApp.html` in any web browser.
   Ensure API key is added inside the script file.
-
+  
+---
 ### 21 Hive Minds Portfolio (MiniProject21)  
 - **Description:**  A personal portfolio website project designed to showcase skills, projects, and achievements.
 - **Tech Stack:** HTML, CSS, JavaScript, React.js
@@ -276,10 +277,12 @@ Open `http://localhost:3000` in your web browser.
   -Responsive design for all screen sizes.
   -Interactive and customizable components.
 - **How to Run:**
- `` cd hive-mind-portfolio
+ ``` bash
+  cd hive-mind-portfolio
   npm install
   npm start
-  ``
+  ```
+  ---
 ## ⚡ Installation & Usage  
 
 Clone this repository:  
