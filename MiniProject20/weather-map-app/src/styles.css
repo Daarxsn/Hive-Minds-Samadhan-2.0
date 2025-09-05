@@ -1,0 +1,12 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Leaflet styles */
+@import "leaflet/dist/leaflet.css";
+
+/* Make sure map and app fill the page nicely */
+html, body, #root {
+  height: 100%;
+  margin: 0;
+}
