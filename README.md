@@ -200,7 +200,6 @@ Open `http://localhost:3000` in your web browser.
 
 ---
 ### 20 Weather Map App (MiniProject20)  
-
 - **Description:** A weather application that displays real-time weather details for any city using API integration.
 - **Tech Stack:**  HTML, CSS, JavaScript, OpenWeather API
 - **Features:** 
@@ -208,13 +207,11 @@ Open `http://localhost:3000` in your web browser.
   -Displays temperature, humidity, and conditions.
   -Uses API calls to fetch live data.
   -Responsive design with simple UI.
-
 - **How to Run:**
   Open `Day20-WeatherMapApp.html` in any web browser.
   Ensure API key is added inside the script file.
 
 ### 21 Hive Minds Portfolio (MiniProject21)  
-
 - **Description:**  A personal portfolio website project designed to showcase skills, projects, and achievements.
 - **Tech Stack:** HTML, CSS, JavaScript, React.js
 - **Features:** 
@@ -223,11 +220,10 @@ Open `http://localhost:3000` in your web browser.
   -Responsive design for all screen sizes.
   -Interactive and customizable components.
 - **How to Run:**
-
  `` cd hive-mind-portfolio
   npm install
-  npm start` `
-
+  npm start
+  ``
 ## ⚡ Installation & Usage  
 
 Clone this repository:  
