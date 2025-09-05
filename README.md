@@ -204,7 +204,7 @@ Open `http://localhost:3000` in your web browser.
 
 Clone this repository:  
 ```bash
-
+https://github.com/Daarxsn/Hive-Minds-Samadhan-2.0.git
 ```
 
 - For **HTML/JS projects (MiniProject16–18):** Open the `index.html` file in a browser.  
